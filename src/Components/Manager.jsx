@@ -67,22 +67,38 @@ const Manager = () => {
         save.current.innerText = "Add Password"; // Reset button text to Add Password
     };
     const deletePassword = (id) => {
-        const delpass=forms.filter(item=>item.id!==id)
-        const c=confirm(" 🥺 Do you really want to deleter this password ?")
-        if(c){
-            setforms(delpass)
-            localStorage.setItem("details", JSON.stringify(forms.filter(item=>item.id!==id)))
-            toast('😒 Password Deleted Sucessfuly !!', {
+        // Custom confirmation dialog using react-toastify
+        toast(
+            ({ closeToast }) => (
+                <div className='text-center'>
+                    🥺 Are you sure you want to delete this password ?
+                    <div className="toast-confirm-buttons flex justify-evenly">
+                        <button className='px-3 text-white mt-2 bg-red-700 border-1 border-slate-400 rounded-lg bg-slate-200'
+                            onClick={() => {
+                                const delpass = forms.filter(item => item.id !== id);
+                                setforms(delpass);
+                                localStorage.setItem("details", JSON.stringify(delpass));
+                                toast.success('😒 Deleted Successfully!');
+                                closeToast(); // Close the confirmation toast
+                            }}
+                        >
+                            Yes
+                        </button>
+                        <button  className='px-3 text-white  mt-2 bg-green-700 border-1 border-slate-400 rounded-lg bg-slate-200' onClick={closeToast}>No</button>
+                    </div>
+                </div>
+            ),
+            {
                 position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
+                autoClose: false, // Disable auto-close for the confirmation
+                hideProgressBar: true,
+                closeOnClick: false,
                 pauseOnHover: true,
-                draggable: true,
+                draggable: false,
                 theme: "light",
-            });
-        }
-    }
+            }
+        );
+    };
     const editPassword = (id) => {
         toast('🤞 Update Your Password !!', {
             position: "top-right",
@@ -127,21 +143,7 @@ const Manager = () => {
 
     return (
         <>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                transition="Bounce"
-            />
-            {/* Same as */}
-            <ToastContainer />
+            <ToastContainer/>
             <div className=" Manager-container custom-md:flex custom-md:justify-center  m-5 p-5">
                 <div className="absolute inset-0 -z-10  w-full">
                     <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-green-400 opacity-20 blur-[100px]"></div>
@@ -223,7 +225,7 @@ const Manager = () => {
                                         </td>
                                         <td className="px-6 py-4 relative z-10">
                                             <div className="flex item-centercursor-pointer ">
-                                                <div className='min-w-36'>{item.upass}</div>
+                                                <div className='min-w-36'>{"*".repeat(item.upass.length)}</div>
                                                 <lord-icon
                                                     src="https://cdn.lordicon.com/depeqmsz.json"
                                                     trigger="hover"

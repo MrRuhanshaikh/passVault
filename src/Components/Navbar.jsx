@@ -1,6 +1,5 @@
 import React from "react";
 import logo1 from "../assets/logo-1.png";
-import githublogo from "../assets/github.svg";
 
 const Navbar = () => {
   return (
@@ -11,7 +10,7 @@ const Navbar = () => {
           <img className="w-8 block sm:hidden" src="favicon.ico" alt="passVault-logo" />
           <div className="absolute bottom-[-10px] left-0 w-full h-1 bg-green-300 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></div>
         </div>
-        <ul className="flex gap-10 items-center">
+        <ul className="flex gap-5 sm:gap-10 items-center">
           <li className="relative group border border-transparent px-4 py-1 overflow-hidden">
             <a href="#1" className="relative z-10 text-white transition-colors duration-500">
               Home
