@@ -84,7 +84,7 @@ const Manager = () => {
                         >
                             Yes
                         </button>
-                        <button  className='px-3 text-white  mt-2 bg-green-700 border-1 border-slate-400 rounded-lg bg-slate-200' onClick={closeToast}>No</button>
+                        <button  className='px-3 text-white  mt-2 bg-green-700 border-1 border-slate-400 rounded-lg' onClick={closeToast}>No</button>
                     </div>
                 </div>
             ),
