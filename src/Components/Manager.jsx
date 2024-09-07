@@ -13,10 +13,10 @@ const Manager = () => {
     const toastId4 = uuidv4();
     const toastId3 = uuidv4();
     const [visibility, setvisibility] = useState(false)
-    const [form, setform] = useState({ siteUrl: "", uname: "", upass: "" })
+    const [form, setform] = useState({siteUrl: "", uname: "", upass: "" })
     const [forms, setforms] = useState([])
-    const save = useRef()
-    const source = useRef()
+    const save=useRef()
+    const source=useRef()
     useEffect(() => {
         const details = localStorage.getItem("details")
         if (details) {
@@ -27,13 +27,13 @@ const Manager = () => {
         const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
         const usernamePattern = /^(?!\d)[A-Za-z_]{3,}$/;
         const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/
-
+    
         const isSiteUrlValid = urlPattern.test(form.siteUrl.trim());
         const isUsernameValid = usernamePattern.test(form.uname.trim());
         const isPasswordValid = passwordPattern.test(form.upass.trim());
-
+    
         return !isSiteUrlValid || !isUsernameValid || !isPasswordValid;
-    };
+    };        
     const passref = useRef()
     const toggelVisibility = () => {
         setvisibility(!visibility)
@@ -42,7 +42,7 @@ const Manager = () => {
     const savePassword = () => {
         if (form.id) {
             // If editing, find the index and update the form in place
-            const updatedForms = forms.map(item =>
+            const updatedForms = forms.map(item => 
                 item.id === form.id ? { ...form } : item
             );
             setforms(updatedForms);
@@ -54,7 +54,7 @@ const Manager = () => {
             setforms(updatedForms);
             localStorage.setItem("details", JSON.stringify(updatedForms));
         }
-        if (!toast.isActive(toastId1)) {
+        if(!toast.isActive(toastId1)){
             toast('🫡 Password Saved Sucessfuly !!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -64,7 +64,7 @@ const Manager = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                toastId: toastId1,
+                toastId:toastId1,
             });
         }
         // Reset form state
@@ -74,7 +74,7 @@ const Manager = () => {
     };
     const deletePassword = (id) => {
         // Custom confirmation dialog using react-toastify
-        if (!toast.isActive(toastId2)) {
+        if(!toast.isActive(toastId2)){
             toast(
                 ({ closeToast }) => (
                     <div className='text-center'>
@@ -91,7 +91,7 @@ const Manager = () => {
                             >
                                 Yes
                             </button>
-                            <button className='px-3 text-white  mt-2 bg-green-700 border-1 border-slate-400 rounded-lg bg-slate-200' onClick={closeToast}>No</button>
+                            <button  className='px-3 text-white  mt-2 bg-green-700 border-1 border-slate-400 rounded-lg bg-slate-200' onClick={closeToast}>No</button>
                         </div>
                     </div>
                 ),
@@ -103,14 +103,14 @@ const Manager = () => {
                     pauseOnHover: true,
                     draggable: false,
                     theme: "light",
-                    toastId: toastId2,
+                    toastId:toastId2,
                 }
             );
         }
-
+       
     };
     const editPassword = (id) => {
-        if (!toast.isActive(toastId4)) {
+        if(!toast.isActive(toastId4)){
             toast('🤞 Update Your Password !!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -119,18 +119,27 @@ const Manager = () => {
                 pauseOnHover: true,
                 draggable: true,
                 theme: "light",
-                toastId: toastId4,
+                toastId:toastId4,
             });
         }
-        setform({ ...forms.filter(i => i.id == id)[0], id: id })
-        setforms(forms.filter(item => item.id !== id))
+        // Find the index of the item to edit
+        const index = forms.findIndex(item => item.id === id);
+        
+        if (index !== -1) {
+            // Set the form state to the current item being edited
+            setform(forms[index]);
+            
+            // Update the source and save button text
+            source.current.src = "https://cdn.lordicon.com/dupxuoaa.json";
+            save.current.innerText = "Save Password";
+        }
     };
-
+    
     const handleChange = (e) => {
         setform({ ...form, [e.target.name]: e.target.value })
     }
     const copy = (item) => {
-        if (!toast.isActive(toastId3)) {
+        if(!toast.isActive(toastId3)){
             toast('©️ Copied to Clipboard!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -140,15 +149,17 @@ const Manager = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                toastId: toastId3,
+                toastId:toastId3,
             });
         }
         navigator.clipboard.writeText(item)
     }
 
+
+
     return (
         <>
-            <ToastContainer />
+            <ToastContainer/>
             <div className=" Manager-container custom-md:flex custom-md:justify-center  m-5 p-5">
                 <div className="absolute inset-0 -z-10  w-full">
                     <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-green-400 opacity-20 blur-[100px]"></div>
@@ -173,7 +184,7 @@ const Manager = () => {
                         </div>
                     </div>
                     <div className="submit flex justify-center">
-                        <button disabled={isFormValid()} onClick={savePassword} className="disabled:opacity-50 disabled:cursor-not-allowed  relative rounded-md py-1 px-4 border border-green-900 overflow-hidden group">
+                        <button  disabled={isFormValid()} onClick={savePassword} className="disabled:opacity-50 disabled:cursor-not-allowed  relative rounded-md py-1 px-4 border border-green-900 overflow-hidden group">
                             <span className="relative flex items-center  z-10">
                                 <lord-icon ref={source} src="https://cdn.lordicon.com/jgnvfzqg.json" trigger="hover"></lord-icon>
                                 <span ref={save}> Add Password</span>
@@ -242,20 +253,20 @@ const Manager = () => {
                                         </td>
                                         <td className="px-6 py-4 relative z-10">
                                             <div className="flex item-centercursor-pointer ">
-                                                <lord-icon
-                                                    src="https://cdn.lordicon.com/wkvacbiw.json"
-                                                    trigger="hover"
-                                                    style={{ height: '15px' }}
-                                                    onClick={() => { editPassword(item.id) }}
+                                            <lord-icon
+                                                src="https://cdn.lordicon.com/wkvacbiw.json"
+                                                trigger="hover"
+                                                style={{ height: '15px' }}
+                                                onClick={()=>{editPassword(item.id)}}
                                                 >
-                                                </lord-icon>
-                                                <lord-icon
-                                                    src="https://cdn.lordicon.com/skkahier.json"
-                                                    trigger="hover"
-                                                    style={{ height: '15px' }}
-                                                    onClick={() => { deletePassword(item.id) }}
+                                            </lord-icon>
+                                            <lord-icon
+                                                src="https://cdn.lordicon.com/skkahier.json"
+                                                trigger="hover"
+                                                style={{ height: '15px' }}
+                                                onClick={()=>{deletePassword(item.id)}}
                                                 >
-                                                </lord-icon>
+                                            </lord-icon>
                                             </div>
                                         </td>
                                         <div className="absolute inset-0 bg-green-200 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></div>
